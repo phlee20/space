@@ -1,5 +1,5 @@
 --[[
-    Space Invaders Remake
+    Space Shooter Remake
 
     -- BaseState Class --
 
