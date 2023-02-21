@@ -42,6 +42,8 @@ function love.load()
         canvas = true
     })
 
+    local sheetData = loadSheetData()
+
     gTextures = {
         ['background'] = love.graphics.newImage('graphics/darkPurple.png'),
         ['main'] = love.graphics.newImage('graphics/sheet.png')
@@ -50,7 +52,31 @@ function love.load()
     gTextures['background']:setWrap('repeat', 'repeat')
     
     gFrames = {
-        ['background'] = GenerateBackground(gTextures['background'])
+        ['background'] = GenerateBackground(gTextures['background']),
+        ['beam'] = GenerateQuads(gTextures['main'], sheetData, 1, 9),
+        ['bolt'] = GenerateQuads(gTextures['main'], sheetData, 10, 12),
+        ['button'] = GenerateQuads(gTextures['main'], sheetData, 13, 16),
+        ['cockpit'] = GenerateQuads(gTextures['main'], sheetData, 17, 48),
+        ['cursor'] = GenerateQuads(gTextures['main'], sheetData, 49, 49),
+        ['enemy'] = GenerateQuads(gTextures['main'], sheetData, 50, 69),
+        ['engine'] = GenerateQuads(gTextures['main'], sheetData, 70, 74),
+        ['fire'] = GenerateQuads(gTextures['main'], sheetData, 75, 94),
+        ['gun'] = GenerateQuads(gTextures['main'], sheetData, 95, 105),
+        ['laser'] = GenerateQuads(gTextures['main'], sheetData, 106, 153),
+        ['meteor'] = GenerateQuads(gTextures['main'], sheetData, 154, 173),
+        ['numeral'] = GenerateQuads(gTextures['main'], sheetData, 174, 184),
+        ['pill'] = GenerateQuads(gTextures['main'], sheetData, 185, 188),
+        ['playerLife'] = GenerateQuads(gTextures['main'], sheetData, 189, 200),
+        ['playerShip'] = GenerateQuads(gTextures['main'], sheetData, 201, 221),
+        ['powerup'] = GenerateQuads(gTextures['main'], sheetData, 222, 237),
+        ['scratch'] = GenerateQuads(gTextures['main'], sheetData, 238, 240),
+        ['shield'] = GenerateQuads(gTextures['main'], sheetData, 241, 246),
+        ['speed'] = GenerateQuads(gTextures['main'], sheetData, 247, 247),
+        ['star'] = GenerateQuads(gTextures['main'], sheetData, 248, 253),
+        ['thing'] = GenerateQuads(gTextures['main'], sheetData, 254, 256),
+        ['turret'] = GenerateQuads(gTextures['main'], sheetData, 257, 258),
+        ['ufo'] = GenerateQuads(gTextures['main'], sheetData, 259, 262),
+        ['wing'] = GenerateQuads(gTextures['main'], sheetData, 263, 294)
     }
     
     gSounds = {
@@ -65,29 +91,6 @@ function love.load()
     backgroundY = -512
 
     love.keyboard.keysPressed = {}
-
-    local quads = {}
-
-    file = io.open("graphics/sheet.csv", "r")
-
-    line = file:read("*l")
-
-    while line ~= nil do
-        local quad = {}
-        index = 1
-
-        for value in string.gmatch(line, "([^,]+)") do
-            quad[index] = value
-            index = index + 1
-        end
-        table.insert(quads, quad)
-        line = file:read("*l")
-    end
-
-    file:close()
-
-    sprites = GenerateQuads(gTextures['main'], quads)
-
 end
 
 function love.resize(w, h)
@@ -100,33 +103,6 @@ end
 
 function love.keyboard.wasPressed(key)
     return love.keyboard.keysPressed[key]
-end
-
-function GenerateBackground(atlas)
-        
-    
-    local quad = love.graphics.newQuad(0, 0, VIRTUAL_WIDTH, VIRTUAL_HEIGHT * 2,
-        atlas:getWidth(), atlas:getHeight()
-    )
-    return quad
-
-end
-
-function GenerateQuads(atlas, quads)
-    local sprites = {}
-
-    local counter = 1
-
-    table.insert(sprites, love.graphics.newQuad(
-            quads[10][2], quads[10][3], quads[10][4], quads[10][5], atlas:getDimensions()
-    ))
---    for quad in quads do
---       table.insert(sprites[counter], love.graphics.newQuad(
---            quad[i][2], quad[i][3], quad[i][4], quad[i][5], atlas:getDimensions()
---        ))
---    end
-
-    return sprites
 end
 
 function love.update(dt)
@@ -151,7 +127,37 @@ function love.draw()
 
     -- draw background
     love.graphics.draw(gTextures['background'], gFrames['background'], 0, backgroundY)
-    love.graphics.draw(gTextures['main'], sprites[1], 100, 100)
+
+    for i = 1, 1 do
+        love.graphics.draw(gTextures['main'], gFrames['speed'][i], 50, 100 * i)
+        love.graphics.draw(gTextures['main'], gFrames['turret'][i], 150, 100 * i)
+        love.graphics.draw(gTextures['main'], gFrames['ufo'][i], 250, 100 * i)
+        love.graphics.draw(gTextures['main'], gFrames['wing'][i], 350, 100 * i)
+    end
 
     push:finish()
+end
+
+function loadSheetData()
+    local quads = {}
+
+    file = io.open("graphics/sheet.csv", "r")
+
+    line = file:read("*l")
+
+    while line ~= nil do
+        local quad = {}
+        index = 1
+
+        for value in string.gmatch(line, "([^,]+)") do
+            quad[index] = value
+            index = index + 1
+        end
+        table.insert(quads, quad)
+        line = file:read("*l")
+    end
+
+    file:close()
+
+    return quads 
 end
