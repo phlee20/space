@@ -1,11 +1,9 @@
 --[[
-    GD50
-    Match-3 Remake
+    Space Invaders Remake
 
     -- BaseState Class --
 
-    Author: Colton Ogden
-    cogden@cs50.harvard.edu
+    Adapted from GD50
 
     Used as the base class for all of our states, so we don't have to
     define empty methods in each of them. StateMachine requires each
