@@ -2,7 +2,7 @@
 function love.load()
     local quads = {}
 
-    file = io.open("sheet.csv", "r")
+    file = io.open("graphics/sheet.csv", "r")
 
     line = file:read("*l")
 
@@ -20,7 +20,7 @@ function love.load()
 
     file:close()
 
-    gTexture = love.graphics.newImage('sheet.png')
+    gTexture = love.graphics.newImage('graphics/sheet.png')
 
     sprites = GenerateQuads(gTexture, quads)
 
