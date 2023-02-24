@@ -34,6 +34,10 @@ function love.load()
         canvas = true
     })
 
+    player = Player()
+    enemy = Enemy()
+    listOfLasers = {}
+
     -- keep track of background scrolling on Y axis
     backgroundY = -512
 
@@ -67,6 +71,20 @@ function love.update(dt)
         backgroundY = -512
     end
 
+    player:update(dt)
+
+    for k, laser in pairs(listOfLasers) do
+        laser:update(dt)
+        
+        if laser:collides(enemy) then
+            laser.dead = true
+        end
+
+        if laser.dead then
+            table.remove(listOfLasers, k)
+        end
+    end
+
     -- reset keys pressed
     love.keyboard.keysPressed = {}
 end
@@ -77,11 +95,10 @@ function love.draw()
     -- draw background
     love.graphics.draw(gTextures['background'], gFrames['background'], 0, backgroundY)
 
-    for i = 1, 1 do
-        love.graphics.draw(gTextures['main'], gFrames['cursor'][i], 50, 100 * i)
-        love.graphics.draw(gTextures['main'], gFrames['turret'][i], 150, 100 * i)
-        love.graphics.draw(gTextures['main'], gFrames['ufo'][i], 250, 100 * i)
-        love.graphics.draw(gTextures['main'], gFrames['wing'][i], 350, 100 * i)
+    player:render()
+    enemy:render()
+    for k, laser in pairs(listOfLasers) do
+        laser:render()
     end
 
     push:finish()

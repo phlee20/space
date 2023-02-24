@@ -21,7 +21,9 @@ require 'src/Util'
 require 'src/StateMachine'
 
 -- game pieces
-
+require 'src/Player'
+require 'src/Enemy'
+require 'src/Laser'
 
 -- game states
 require 'src/states/BaseState'
