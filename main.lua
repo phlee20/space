@@ -24,6 +24,8 @@ require 'src/Dependencies'
 ]]
 function love.load()
 
+    math.randomseed(os.time())
+
     love.window.setTitle('Space Invaders')
 
     -- initialize our virtual resolution
